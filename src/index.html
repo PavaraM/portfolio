@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pavara Mirihagalla — DevOps Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f6f3;
+      --surface: #ffffff;
+      --border: #e4e2dc;
+      --text: #1a1916;
+      --muted: #8a8880;
+      --accent: #2a5cff;
+      --accent-soft: #edf0ff;
+      --tag-bg: #f0ede8;
+      --mono: 'DM Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+      --radius: 8px;
+      --max: 780px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ── */
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-of-type { border-bottom: none; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247, 246, 243, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ── */
+    #hero {
+      padding: 100px 0 80px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      font-weight: 400;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+    }
+    h1 {
+      font-size: clamp(36px, 6vw, 52px);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+    h1 em {
+      font-style: normal;
+      font-weight: 500;
+    }
+    .hero-desc {
+      font-size: 16.5px;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      font-size: 13.5px;
+      font-weight: 500;
+      font-family: var(--sans);
+      text-decoration: none;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: all 0.15s ease;
+      letter-spacing: 0.01em;
+    }
+    .btn-primary {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+    .btn-primary:hover {
+      background: #2d2b27;
+      border-color: #2d2b27;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-ghost:hover {
+      border-color: #c0bdb5;
+      background: var(--surface);
+    }
+    .hero-stack {
+      margin-top: 60px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .stack-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .stack-pill {
+      font-family: var(--mono);
+      font-size: 11.5px;
+      background: var(--tag-bg);
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    /* ── Section headings ── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      margin-bottom: 40px;
+      color: var(--text);
+    }
+
+    /* ── Projects ── */
+    .projects-grid {
+      display: grid;
+      gap: 16px;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: start;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .project-card:hover {
+      border-color: #c8c5be;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .project-name {
+      font-size: 15.5px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .project-name .mono-tag {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 400;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+    .project-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--muted);
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+    .project-arrow {
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1;
+      padding-top: 2px;
+      transition: transform 0.15s, color 0.15s;
+    }
+    .project-card:hover .project-arrow {
+      transform: translate(3px, -3px);
+      color: var(--text);
+    }
+    .project-stat {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 10px;
+      display: flex;
+      gap: 14px;
+    }
+    .project-stat span::before {
+      content: '·';
+      margin-right: 5px;
+      color: var(--border);
+    }
+    .project-stat span:first-child::before { content: none; }
+
+    /* ── About ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    @media (max-width: 600px) {
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+    .about-text p {
+      font-size: 14.5px;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-text strong { color: var(--text); font-weight: 500; }
+    .fact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .fact-item {
+      display: flex;
+      flex-direction: column;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .fact-item:first-child { border-top: 1px solid var(--border); }
+    .fact-key {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .fact-val {
+      font-size: 13.5px;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    /* ── Contact ── */
+    #contact { padding: 80px 0 100px; }
+    .contact-inner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: center;
+    }
+    @media (max-width: 600px) {
+      .contact-inner { grid-template-columns: 1fr; padding: 32px 24px; }
+    }
+    .contact-title {
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .contact-sub {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 360px;
+    }
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+    }
+    @media (max-width: 600px) {
+      .contact-links { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+    }
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: var(--mono);
+      transition: color 0.15s;
+      padding: 6px 0;
+    }
+    .contact-link:hover { color: var(--text); }
+    .contact-link svg { flex-shrink: 0; }
+
+    /* ── Footer ── */
+    footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--border);
+    }
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-text {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .footer-right {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── Animations ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.55s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in:nth-child(1) { animation-delay: 0.05s; }
+    .fade-in:nth-child(2) { animation-delay: 0.15s; }
+    .fade-in:nth-child(3) { animation-delay: 0.25s; }
+    .fade-in:nth-child(4) { animation-delay: 0.35s; }
+    .fade-in:nth-child(5) { animation-delay: 0.42s; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="container">
+    <a class="nav-logo" href="#">pavara<span>.</span>dev</a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="container">
+    <p class="hero-eyebrow fade-in">DevOps Engineer · Sri Lanka</p>
+    <h1 class="fade-in">
+      Building <em>reliable</em><br>infrastructure,<br>one layer at a time.
+    </h1>
+    <p class="hero-desc fade-in">
+      I'm Pavara — a self-taught DevOps engineer focused on Linux systems, containerization, and automation tooling. I build things that are simple, stable, and built to last.
+    </p>
+    <div class="hero-actions fade-in">
+      <a href="https://github.com/PavaraM" target="_blank" rel="noopener" class="btn btn-primary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.167 6.839 9.49.5.09.682-.218.682-.484 0-.236-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.532 1.03 1.532 1.03.891 1.529 2.341 1.088 2.91.832.091-.646.349-1.086.635-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.254-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.026A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.295 2.748-1.026 2.748-1.026.546 1.376.202 2.392.1 2.646.641.698 1.028 1.59 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.337-.012 2.415-.012 2.743 0 .269.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+        GitHub
+      </a>
+      <a href="#contact" class="btn btn-ghost">Get in touch →</a>
+    </div>
+    <div class="hero-stack fade-in">
+      <span class="stack-label">Stack</span>
+      <span class="stack-pill">Linux</span>
+      <span class="stack-pill">Docker</span>
+      <span class="stack-pill">Bash</span>
+      <span class="stack-pill">Git</span>
+      <span class="stack-pill">Nginx</span>
+      <span class="stack-pill">Ubuntu</span>
+    </div>
+  </div>
+</section>
+
+<!-- Projects -->
+<section id="projects">
+  <div class="container">
+    <p class="section-label reveal">Selected Work</p>
+    <h2 class="reveal">Projects</h2>
+    <div class="projects-grid">
+
+      <a href="https://github.com/PavaraM" target="_blank" rel="noopener" class="project-card reveal">
+        <div>
+          <div class="project-name">
+            DevBox
+            <span class="mono-tag">bash</span>
+          </div>
+          <p class="project-desc">
+            Modular bash-based development environment setup tool for Ubuntu/Debian. Features a five-library architecture — logging, packages, Docker, diagnostics, and reporting — with a 14-code exit system and auto-archival logging.
+          </p>
+          <div class="project-tags">
+            <span class="tag">bash</span>
+            <span class="tag">ubuntu</span>
+            <span class="tag">docker</span>
+            <span class="tag">modular</span>
+            <span class="tag">automation</span>
+          </div>
+          <div class="project-stat">
+            <span>5 library modules</span>
+            <span>14 exit codes</span>
+            <span>Auto-archival logging</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </a>
+
+      <a href="https://github.com/PavaraM" target="_blank" rel="noopener" class="project-card reveal">
+        <div>
+          <div class="project-name">
+            bash-utils
+            <span class="mono-tag">library</span>
+          </div>
+          <p class="project-desc">
+            A reusable logging library extracted from DevBox. Designed as a standalone, portable module for consistent structured logging across Bash projects — clean API, minimal dependencies.
+          </p>
+          <div class="project-tags">
+            <span class="tag">bash</span>
+            <span class="tag">logging</span>
+            <span class="tag">library</span>
+            <span class="tag">portable</span>
+          </div>
+          <div class="project-stat">
+            <span>Reusable module</span>
+            <span>Structured output</span>
+            <span>Zero dependencies</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </a>
+
+      <a href="https://github.com/PavaraM" target="_blank" rel="noopener" class="project-card reveal">
+        <div>
+          <div class="project-name">
+            Project Port-Forward
+            <span class="mono-tag">infra</span>
+          </div>
+          <p class="project-desc">
+            A self-directed Docker and Linux infrastructure lab running on Ubuntu Server 24.04. Built to work through real containerization challenges — nginx permissions, iptables port forwarding, VM networking, and Docker Compose orchestration.
+          </p>
+          <div class="project-tags">
+            <span class="tag">docker</span>
+            <span class="tag">nginx</span>
+            <span class="tag">iptables</span>
+            <span class="tag">ubuntu-server</span>
+            <span class="tag">compose</span>
+          </div>
+          <div class="project-stat">
+            <span>Ubuntu Server 24.04</span>
+            <span>Docker 29.2.1</span>
+            <span>Compose v5</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="container">
+    <p class="section-label reveal">Background</p>
+    <h2 class="reveal">About</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>
+          I started my DevOps journey on <strong>January 1, 2026</strong>, with no formal degree — just a structured 12-month roadmap and a preference for learning by building real things.
+        </p>
+        <p>
+          My work is grounded in <strong>Linux systems, Bash automation, and containerization</strong>. I care about the small engineering details: clean exit codes, structured logs, modular architecture, minimal surface area.
+        </p>
+        <p>
+          I'm working toward a <strong>remote junior DevOps or Platform Engineer role</strong>, and building a portfolio of infrastructure tools and experiments that reflect how I think about systems — simply, clearly, and with care.
+        </p>
+      </div>
+      <ul class="fact-list reveal">
+        <li class="fact-item">
+          <span class="fact-key">Location</span>
+          <span class="fact-val">Sri Lanka (open to remote)</span>
+        </li>
+        <li class="fact-item">
+          <span class="fact-key">Machine</span>
+          <span class="fact-val">OBSIDIAN · Ubuntu 24.04 · kernel 6.17</span>
+        </li>
+        <li class="fact-item">
+          <span class="fact-key">Current focus</span>
+          <span class="fact-val">Docker · CI/CD · Linux internals</span>
+        </li>
+        <li class="fact-item">
+          <span class="fact-key">GitHub</span>
+          <span class="fact-val">@PavaraM</span>
+        </li>
+        <li class="fact-item">
+          <span class="fact-key">Status</span>
+          <span class="fact-val">Open to opportunities</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner reveal">
+      <div>
+        <p class="contact-title">Let's work together.</p>
+        <p class="contact-sub">Open to remote DevOps, platform, or infrastructure roles. Feel free to reach out — I respond promptly.</p>
+      </div>
+      <div class="contact-links">
+        <a href="https://github.com/PavaraM" target="_blank" rel="noopener" class="contact-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.167 6.839 9.49.5.09.682-.218.682-.484 0-.236-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.532 1.03 1.532 1.03.891 1.529 2.341 1.088 2.91.832.091-.646.349-1.086.635-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.254-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.026A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.295 2.748-1.026 2.748-1.026.546 1.376.202 2.392.1 2.646.641.698 1.028 1.59 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.337-.012 2.415-.012 2.743 0 .269.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          github.com/PavaraM
+        </a>
+        <a href="mailto:pavarairihagalla@icloud.com" class="contact-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          pavaramirihagalla@icloud.com
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <span class="footer-text">© 2026 Pavara Mirihagalla</span>
+    <span class="footer-right">Built with HTML · No frameworks</span>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
