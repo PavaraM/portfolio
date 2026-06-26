@@ -197,7 +197,7 @@
   <div class="container">
     <p class="eyebrow">DevOps Engineer · Sri Lanka</p>
     <h1>Building <em>reliable</em><br>infrastructure,<br>one layer at a time.</h1>
-    <p class="hero-desc">I'm Pavara — a self-taught DevOps engineer focused on Linux systems, containerization, and automation tooling. I build things that are simple, stable, and built to last.</p>
+    <p class="hero-desc">I'm Pavara — a self-taught DevOps engineer working through a 12-month roadmap (Linux → Docker → Kubernetes → CI/CD → Terraform → Cloud). I build infrastructure tooling that holds up under real use: idempotent, observable, and small enough to reason about.</p>
     <div class="hero-actions">
       <a href="https://github.com/PavaraM" target="_blank" rel="noopener" class="btn btn-primary">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.167 6.839 9.49.5.09.682-.218.682-.484 0-.236-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.532 1.03 1.532 1.03.891 1.529 2.341 1.088 2.91.832.091-.646.349-1.086.635-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.254-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.026A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.295 2.748-1.026 2.748-1.026.546 1.376.202 2.392.1 2.646.641.698 1.028 1.59 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.337-.012 2.415-.012 2.743 0 .269.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
@@ -236,6 +236,7 @@
         <li class="fact-item"><span class="fact-key">Location</span><span class="fact-val">Sri Lanka (open to remote)</span></li>
         <li class="fact-item"><span class="fact-key">Machine</span><span class="fact-val">OBSIDIAN · Ubuntu 24.04 · kernel 6.17</span></li>
         <li class="fact-item"><span class="fact-key">Current focus</span><span class="fact-val">Docker · CI/CD · Linux internals</span></li>
+        <li class="fact-item"><span class="fact-key">Currently</span><span class="fact-val">AWS Cloud Practitioner · in progress</span></li>
         <li class="fact-item"><span class="fact-key">GitHub</span><span class="fact-val">@PavaraM</span></li>
         <li class="fact-item"><span class="fact-key">Status</span><span class="fact-val">Open to opportunities</span></li>
       </ul>
@@ -271,12 +272,6 @@
     <span>Built with HTML · No frameworks</span>
   </div>
 </footer>
-
-<!-- EDIT FAB -->
-<button id="edit-fab" onclick="openAdmin()">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-  Edit
-</button>
 
 <!-- ADMIN PANEL -->
 <div id="admin-overlay" onclick="overlayClick(event)">
@@ -356,11 +351,11 @@
   // ── Default data ──────────────────────────────────────────────────────────
   const DEFAULTS = {
     projects: [
-      { id: "devbox", name: "DevBox", type: "bash", desc: "Modular bash-based development environment setup tool for Ubuntu/Debian. Five-library architecture — logging, packages, Docker, diagnostics, and reporting — with a 14-code exit system and auto-archival logging.", tags: ["bash","ubuntu","docker","modular","automation"], stats: ["5 library modules","14 exit codes","Auto-archival logging"], url: "https://github.com/PavaraM" },
-      { id: "bash-utils", name: "bash-utils", type: "library", desc: "A reusable logging library extracted from DevBox. Standalone, portable module for consistent structured logging across Bash projects — clean API, minimal dependencies.", tags: ["bash","logging","library","portable"], stats: ["Reusable module","Structured output","Zero dependencies"], url: "https://github.com/PavaraM" },
-      { id: "port-forward", name: "Project Port-Forward", type: "infra", desc: "Self-directed Docker and Linux infrastructure lab on Ubuntu Server 24.04. Built to work through real containerization challenges — nginx permissions, iptables, VM networking, and Docker Compose.", tags: ["docker","nginx","iptables","ubuntu-server","compose"], stats: ["Ubuntu Server 24.04","Docker 29.2.1","Compose v5"], url: "https://github.com/PavaraM" }
+      { id: "cicd-demo", name: "cicd-demo", type: "ci/cd", desc: "Flask API with full CI/CD pipeline — unit tests, multi-stage Docker build, Trivy security scan, and blue/green deploy on every push to main. Demonstrates a production-shaped pipeline: tests gate the build, the build gates the deploy.", tags: ["python","docker","github-actions","trivy","blue-green"], stats: ["Multi-stage Docker","Trivy vulnerability scan","Blue/green deploy"], url: "https://github.com/PavaraM/cicd-demo" },
+      { id: "devbox", name: "DevBox", type: "bash · infra", desc: "Modular Bash bootstrapper for Ubuntu/Debian dev environments. Idempotent provisioning, SSH hardening, UFW firewall, deploy-user setup, dry-run mode, structured logging. Six library modules, 17 exit codes.", tags: ["bash","ubuntu","ufw","ssh","systemd","automation"], stats: ["6 library modules","17 exit codes","Idempotent · dry-run capable"], url: "https://github.com/PavaraM/devbox" },
+      { id: "bash-logger", name: "bash-logger", type: "library", desc: "Reusable logging library extracted from DevBox. Standalone, portable module for consistent structured logging across Bash projects — clean API, sudo-aware ownership, config validation. Sudo chown runs at load time so logs never accumulate as root-owned.", tags: ["bash","logging","library","portable"], stats: ["Zero dependencies","Sudo-aware log ownership","Config validation at load"], url: "https://github.com/PavaraM/bash-logger" }
     ],
-    skills: ["Linux","Docker","Bash","Git","Ubuntu","Docker Compose"]
+    skills: ["Linux","Docker","Bash","Git","GitHub Actions","Python","AWS","Docker Compose"]
   };
 
   // ── State ─────────────────────────────────────────────────────────────────
