@@ -4,73 +4,132 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pavara Mirihagalla — DevOps Engineer</title>
+  <meta name="description" content="Pavara Mirihagalla — self-taught DevOps engineer building reliable infrastructure, one layer at a time." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <script>
+    /* Apply saved theme before paint to avoid a flash of the wrong theme. */
+    (function () {
+      try {
+        var t = localStorage.getItem("pv-theme");
+        if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #f7f6f3; --surface: #fff; --border: #e4e2dc;
-      --text: #1a1916; --muted: #8a8880; --accent: #2a5cff;
-      --accent-soft: #edf0ff; --tag-bg: #f0ede8;
+      color-scheme: light;
+      --bg: #f6f5f1; --surface: #ffffff; --border: #e6e3db;
+      --text: #1a1815; --muted: #837e75; --accent: #2e5bff;
+      --accent-soft: #eef1ff; --tag-bg: #efede7;
+      --good: #2e9e5b; --term-bg: #161512; --term-text: #d8d5cc;
       --mono: 'DM Mono', monospace; --sans: 'DM Sans', sans-serif;
-      --r: 8px; --max: 780px;
+      --r: 10px; --max: 860px;
+      --shadow: 0 8px 30px rgba(26,24,21,.06);
+    }
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #131310; --surface: #1a1a16; --border: #2b2a24;
+      --text: #ece9e2; --muted: #948f86; --accent: #8fa8ff;
+      --accent-soft: #1c2236; --tag-bg: #21201b;
+      --good: #4ec87e; --term-bg: #0e0e0c; --term-text: #d8d5cc;
+      --shadow: 0 8px 30px rgba(0,0,0,.4);
     }
     html { scroll-behavior: smooth; }
-    body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; transition: background .25s, color .25s; }
     .container { max-width: var(--max); margin: 0 auto; padding: 0 28px; }
+    ::selection { background: var(--accent); color: #fff; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 
     /* NAV */
-    nav { position: sticky; top: 0; z-index: 100; background: rgba(247,246,243,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 14px 0; }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo { font-family: var(--mono); font-size: 13px; color: var(--text); text-decoration: none; }
+    nav { position: sticky; top: 0; z-index: 100; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid transparent; padding: 14px 0; transition: border-color .2s, box-shadow .2s; }
+    nav.scrolled { border-bottom-color: var(--border); box-shadow: 0 1px 0 var(--bg), 0 6px 24px rgba(0,0,0,.04); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .nav-logo { font-family: var(--mono); font-size: 13px; color: var(--text); text-decoration: none; white-space: nowrap; }
     .nav-logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 28px; list-style: none; }
-    .nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .15s; }
+    .nav-right { display: flex; align-items: center; gap: 22px; }
+    .nav-links { display: flex; gap: 22px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .15s; position: relative; }
     .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--text); }
+    .nav-links a.active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -22px; height: 2px; background: var(--accent); border-radius: 2px; }
+    #theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 50%; background: transparent; color: var(--muted); cursor: pointer; transition: color .15s, border-color .15s; }
+    #theme-toggle:hover { color: var(--text); border-color: #b8b4ab; }
+    #theme-toggle svg { width: 15px; height: 15px; }
+    [data-theme="light"] .icon-moon { display: block; }
+    [data-theme="light"] .icon-sun { display: none; }
+    [data-theme="dark"] .icon-moon { display: none; }
+    [data-theme="dark"] .icon-sun { display: block; }
 
     /* HERO */
-    #hero { padding: 100px 0 80px; border-bottom: 1px solid var(--border); }
-    .eyebrow { font-family: var(--mono); font-size: 11.5px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    #hero { padding: 110px 0 90px; border-bottom: 1px solid var(--border); }
+    .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: center; }
+    @media (max-width: 760px) { .hero-grid { grid-template-columns: 1fr; gap: 48px; } }
+    .eyebrow { font-family: var(--mono); font-size: 11.5px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 22px; display: flex; align-items: center; gap: 10px; }
     .eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent); }
-    h1 { font-size: clamp(34px, 5.5vw, 50px); font-weight: 300; line-height: 1.12; letter-spacing: -.02em; margin-bottom: 24px; }
-    h1 em { font-style: normal; font-weight: 500; }
-    .hero-desc { font-size: 16px; color: var(--muted); font-weight: 300; max-width: 520px; line-height: 1.7; margin-bottom: 36px; }
-    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
-    .btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: var(--r); font-size: 13.5px; font-weight: 500; font-family: var(--sans); text-decoration: none; border: 1.5px solid transparent; transition: all .15s; cursor: pointer; }
-    .btn-primary { background: var(--text); color: #fff; border-color: var(--text); }
-    .btn-primary:hover { background: #2d2b27; }
+    h1 { font-size: clamp(32px, 5vw, 46px); font-weight: 300; line-height: 1.14; letter-spacing: -.02em; margin-bottom: 22px; }
+    h1 em { font-style: normal; font-weight: 500; color: var(--accent); }
+    .hero-desc { font-size: 15.5px; color: var(--muted); font-weight: 300; max-width: 500px; line-height: 1.75; margin-bottom: 34px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: var(--r); font-size: 13.5px; font-weight: 500; font-family: var(--sans); text-decoration: none; border: 1.5px solid transparent; transition: all .15s; cursor: pointer; }
+    .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .btn-primary:hover { opacity: .85; transform: translateY(-1px); }
     .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
-    .btn-ghost:hover { border-color: #c0bdb5; background: var(--surface); }
+    .btn-ghost:hover { border-color: #b8b4ab; background: var(--surface); transform: translateY(-1px); }
     .stack-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .stack-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
-    .stack-pill { font-family: var(--mono); font-size: 11.5px; background: var(--tag-bg); color: var(--muted); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
+    .stack-pill { font-family: var(--mono); font-size: 11.5px; background: var(--tag-bg); color: var(--muted); padding: 4px 10px; border-radius: 5px; border: 1px solid var(--border); }
+
+    /* TERMINAL CARD */
+    .term-card { background: var(--term-bg); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; font-family: var(--mono); font-size: 12px; line-height: 1.8; }
+    .term-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-bottom: 1px solid #2a2925; background: #1c1b18; }
+    .term-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .term-dot:nth-child(1) { background: #ff5f57; }
+    .term-dot:nth-child(2) { background: #febc2e; }
+    .term-dot:nth-child(3) { background: #28c840; }
+    .term-title { margin-left: 8px; font-size: 11px; color: #8a877f; }
+    .term-body { padding: 16px 18px 18px; overflow-x: auto; }
+    .term-body .c { color: #8a877f; }
+    .term-body .p { color: #9d9a92; }
+    .term-body .s { color: var(--good); }
+    .term-body .e { color: #ff8c5a; }
+    .term-cursor { display: inline-block; width: 7px; height: 13px; background: var(--good); vertical-align: text-bottom; animation: blink 1.1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    @media (max-width: 760px) { .term-card { display: none; } }
 
     /* SECTIONS */
-    .section { padding: 80px 0; border-bottom: 1px solid var(--border); }
-    .section-last { padding: 80px 0 100px; }
-    .section-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
-    h2 { font-size: 26px; font-weight: 400; letter-spacing: -.015em; margin-bottom: 36px; }
+    .section { padding: 90px 0; border-bottom: 1px solid var(--border); }
+    .section-last { padding: 90px 0 110px; }
+    section[id] { scroll-margin-top: 70px; }
+    .section-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px; }
+    h2 { font-size: 26px; font-weight: 400; letter-spacing: -.015em; margin-bottom: 40px; }
 
     /* PROJECTS */
-    .projects-grid { display: grid; gap: 14px; }
-    .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 26px 30px; display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: start; text-decoration: none; color: inherit; transition: border-color .15s, box-shadow .15s; }
-    .project-card:hover { border-color: #c8c5be; box-shadow: 0 4px 20px rgba(0,0,0,.06); }
-    .project-name { font-size: 15px; font-weight: 500; margin-bottom: 6px; display: flex; align-items: center; gap: 9px; }
-    .mono-tag { font-family: var(--mono); font-size: 10.5px; color: var(--accent); background: var(--accent-soft); padding: 2px 7px; border-radius: 3px; }
-    .project-desc { font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-    .tag { font-family: var(--mono); font-size: 10.5px; color: var(--muted); background: var(--tag-bg); border: 1px solid var(--border); padding: 3px 8px; border-radius: 3px; }
-    .project-stats { font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; gap: 0; flex-wrap: wrap; }
-    .project-stats span { margin-right: 14px; }
-    .project-stats span::before { content: '· '; color: #ccc; margin-right: 4px; }
-    .project-stats span:first-child::before { content: none; }
-    .card-arrow { color: var(--muted); font-size: 17px; transition: transform .15s, color .15s; }
+    .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    @media (max-width: 700px) { .projects-grid { grid-template-columns: 1fr; } }
+    .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 24px 26px; display: flex; flex-direction: column; gap: 12px; text-decoration: none; color: inherit; transition: transform .18s, border-color .18s, box-shadow .18s; }
+    .project-card:hover { border-color: #c9c5bc; box-shadow: var(--shadow); transform: translateY(-3px); }
+    [data-theme="dark"] .project-card:hover { border-color: #3a392f; }
+    .project-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .project-name { font-size: 15px; font-weight: 500; display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+    .mono-tag { font-family: var(--mono); font-size: 10.5px; color: var(--accent); background: var(--accent-soft); padding: 2px 7px; border-radius: 4px; }
+    .card-arrow { color: var(--muted); font-size: 16px; flex-shrink: 0; transition: transform .18s, color .18s; }
     .project-card:hover .card-arrow { transform: translate(3px,-3px); color: var(--text); }
+    .project-desc { font-size: 13px; color: var(--muted); line-height: 1.65; flex-grow: 1; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-family: var(--mono); font-size: 10.5px; color: var(--muted); background: var(--tag-bg); border: 1px solid var(--border); padding: 3px 8px; border-radius: 4px; }
+    .project-stats { font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 0; }
+    .project-stats span { margin-right: 14px; }
+    .project-stats span::before { content: '· '; color: #cfcbc2; margin-right: 4px; }
+    .project-stats span:first-child::before { content: none; }
+    [data-theme="dark"] .project-stats span::before { color: #3f3d36; }
 
     /* ABOUT */
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
-    @media (max-width: 600px) { .about-grid { grid-template-columns: 1fr; } }
-    .about-text p { font-size: 14.5px; color: var(--muted); line-height: 1.75; margin-bottom: 14px; }
+    .about-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: start; }
+    @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; gap: 40px; } }
+    .about-text p { font-size: 14.5px; color: var(--muted); line-height: 1.8; margin-bottom: 14px; }
     .about-text strong { color: var(--text); font-weight: 500; }
     .fact-list { list-style: none; }
     .fact-item { display: flex; flex-direction: column; padding: 13px 0; border-bottom: 1px solid var(--border); }
@@ -79,135 +138,98 @@
     .fact-val { font-size: 13.5px; color: var(--text); }
 
     /* CONTACT */
-    .contact-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 44px; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
-    @media (max-width: 600px) { .contact-box { grid-template-columns: 1fr; padding: 28px 22px; } }
-    .contact-title { font-size: 22px; font-weight: 400; letter-spacing: -.01em; margin-bottom: 7px; }
+    .contact-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 46px; display: grid; grid-template-columns: 1fr auto; gap: 36px; align-items: center; box-shadow: var(--shadow); }
+    @media (max-width: 640px) { .contact-box { grid-template-columns: 1fr; padding: 30px 26px; } }
+    .contact-title { font-size: 22px; font-weight: 400; letter-spacing: -.01em; margin-bottom: 8px; }
+    .contact-title span { color: var(--accent); }
     .contact-sub { font-size: 14px; color: var(--muted); }
-    .contact-links { display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
-    @media (max-width: 600px) { .contact-links { align-items: flex-start; } }
-    .contact-link { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); text-decoration: none; font-family: var(--mono); transition: color .15s; }
+    .contact-links { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+    .contact-link { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); text-decoration: none; font-family: var(--mono); transition: color .15s; }
     .contact-link:hover { color: var(--text); }
 
     /* FOOTER */
-    footer { padding: 26px 0; border-top: 1px solid var(--border); }
-    .footer-inner { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    footer { padding: 28px 0; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; color: var(--muted); }
 
-    /* EDIT FAB */
-    #edit-fab { position: fixed; bottom: 24px; right: 24px; z-index: 400; display: flex; align-items: center; gap: 7px; background: var(--text); color: #fff; border: none; border-radius: 100px; padding: 10px 18px; font-family: var(--sans); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,.2); transition: background .15s, transform .15s; }
-    #edit-fab:hover { background: #2d2b27; transform: translateY(-1px); }
+    /* SCROLL TO TOP */
+    #to-top { position: fixed; bottom: 26px; right: 26px; z-index: 200; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: var(--text); color: var(--bg); border: none; border-radius: 50%; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity .2s, transform .2s, visibility .2s; box-shadow: 0 6px 20px rgba(0,0,0,.2); }
+    #to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    #to-top:hover { opacity: .85; }
 
-    /* ADMIN OVERLAY */
-    #admin-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.35); backdrop-filter: blur(4px); z-index: 500; align-items: flex-end; justify-content: flex-end; padding: 20px; }
-    #admin-overlay.open { display: flex; }
-    #admin-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; width: 460px; max-height: 82vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.2); overflow: hidden; }
-    .admin-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 22px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-    .admin-header-left strong { font-size: 15px; font-weight: 500; display: block; }
-    .admin-header-left span { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-    #admin-close { background: none; border: none; font-size: 16px; color: var(--muted); cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: color .15s; }
-    #admin-close:hover { color: var(--text); }
-    .admin-tabs { display: flex; border-bottom: 1px solid var(--border); padding: 0 22px; flex-shrink: 0; }
-    .admin-tab { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 0; margin-right: 20px; margin-bottom: -1px; font-family: var(--sans); font-size: 13px; color: var(--muted); cursor: pointer; transition: color .15s, border-color .15s; }
-    .admin-tab.active { color: var(--text); border-bottom-color: var(--text); }
-    .admin-body { padding: 18px 22px; overflow-y: auto; flex: 1; }
-    .tab-pane { display: none; }
-    .tab-pane.active { display: block; }
+    /* REVEAL (hidden only when JS is active; content is always visible without JS) */
+    .reveal { will-change: opacity, transform; }
+    .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+    .js .reveal.is-visible { opacity: 1; transform: none; }
 
-    /* FORM ELEMENTS */
-    .form-label { font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: .07em; text-transform: uppercase; display: block; margin-bottom: 5px; margin-top: 14px; }
-    .form-label:first-child { margin-top: 0; }
-    .form-hint { font-size: 9.5px; text-transform: none; letter-spacing: 0; opacity: .7; }
-    input[type=text], input[type=url], textarea, select {
-      width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--r);
-      font-family: var(--sans); font-size: 13.5px; color: var(--text); background: var(--surface);
-      outline: none; transition: border-color .15s; appearance: none;
+    /* REDUCED MOTION */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1 !important; transform: none !important; }
     }
-    input[type=text]:focus, input[type=url]:focus, textarea:focus { border-color: var(--accent); }
-    textarea { resize: vertical; }
-
-    /* PROJECT LIST */
-    #project-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-    .p-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 13px; border: 1px solid var(--border); border-radius: var(--r); background: var(--bg); }
-    .p-row-info { display: flex; align-items: center; gap: 9px; }
-    .p-row-name { font-size: 13.5px; font-weight: 500; }
-    .p-row-type { font-family: var(--mono); font-size: 10px; color: var(--accent); background: var(--accent-soft); padding: 2px 6px; border-radius: 3px; }
-    .p-row-btns { display: flex; gap: 6px; }
-    .row-btn { font-family: var(--sans); font-size: 12px; padding: 4px 10px; border-radius: 5px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); cursor: pointer; transition: all .12s; }
-    .row-btn:hover { color: var(--text); border-color: #c0bdb5; }
-    .row-btn.del:hover { color: #d00; border-color: #fcc; background: #fff5f5; }
-
-    /* FORM CARD */
-    #project-form-wrap { display: none; background: var(--bg); border: 1px solid var(--border); border-radius: var(--r); padding: 18px; margin-bottom: 14px; }
-    #project-form-wrap.open { display: block; }
-    .form-title { font-size: 13.5px; font-weight: 500; margin-bottom: 14px; }
-    .form-actions { display: flex; gap: 8px; margin-top: 16px; }
-    .btn-save { padding: 9px 18px; background: var(--text); color: #fff; border: none; border-radius: var(--r); font-family: var(--sans); font-size: 13px; font-weight: 500; cursor: pointer; transition: background .15s; }
-    .btn-save:hover { background: #2d2b27; }
-    .btn-cancel-form { padding: 9px 14px; background: none; color: var(--muted); border: 1px solid var(--border); border-radius: var(--r); font-family: var(--sans); font-size: 13px; cursor: pointer; transition: all .15s; }
-    .btn-cancel-form:hover { color: var(--text); border-color: #c0bdb5; }
-    .btn-new-project { width: 100%; padding: 10px; border: 1.5px dashed var(--border); border-radius: var(--r); background: none; color: var(--muted); font-family: var(--sans); font-size: 13px; cursor: pointer; transition: border-color .15s, color .15s; }
-    .btn-new-project:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* SKILLS TAB */
-    .skill-add-row { display: flex; gap: 8px; margin-bottom: 16px; }
-    .skill-add-row input { flex: 1; }
-    .btn-add-skill { padding: 9px 16px; background: var(--text); color: #fff; border: none; border-radius: var(--r); font-family: var(--sans); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background .15s; }
-    .btn-add-skill:hover { background: #2d2b27; }
-    #skill-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .skill-chip { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 12px; background: var(--tag-bg); border: 1px solid var(--border); padding: 5px 10px; border-radius: 4px; }
-    .skill-x { background: none; border: none; font-size: 10px; color: var(--muted); cursor: pointer; transition: color .12s; padding: 0; line-height: 1; }
-    .skill-x:hover { color: #d00; }
-
-    /* PASSWORD PROMPT */
-    #pw-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); backdrop-filter: blur(4px); z-index: 600; align-items: center; justify-content: center; }
-    #pw-overlay.open { display: flex; }
-    #pw-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px 28px; width: 320px; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
-    #pw-box h3 { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
-    #pw-box p { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 18px; }
-    #pw-input { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--r); font-family: var(--sans); font-size: 14px; color: var(--text); background: var(--surface); outline: none; transition: border-color .15s; margin-bottom: 10px; }
-    #pw-input:focus { border-color: var(--accent); }
-    #pw-input.shake { animation: shake .3s ease; border-color: #e03; }
-    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
-    #pw-error { font-family: var(--mono); font-size: 11px; color: #d00; min-height: 16px; margin-bottom: 12px; }
-    .pw-actions { display: flex; gap: 8px; }
-    #pw-submit { flex: 1; padding: 9px; background: var(--text); color: #fff; border: none; border-radius: var(--r); font-family: var(--sans); font-size: 13px; font-weight: 500; cursor: pointer; transition: background .15s; }
-    #pw-submit:hover { background: #2d2b27; }
-    #pw-cancel { padding: 9px 14px; background: none; color: var(--muted); border: 1px solid var(--border); border-radius: var(--r); font-family: var(--sans); font-size: 13px; cursor: pointer; transition: all .15s; }
-    #pw-cancel:hover { color: var(--text); border-color: #c0bdb5; }
-
-    /* TOAST */
-    #toast { display: none; position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; font-family: var(--mono); font-size: 12px; padding: 8px 18px; border-radius: 6px; z-index: 999; }
   </style>
+  <script>document.documentElement.classList.add('js');</script>
+  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="nav">
   <div class="container nav-inner">
     <a class="nav-logo" href="#">pavara<span>.</span>dev</a>
-    <ul class="nav-links">
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <button id="theme-toggle" aria-label="Toggle dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
   <div class="container">
-    <p class="eyebrow">DevOps Engineer · Sri Lanka</p>
-    <h1>Building <em>reliable</em><br>infrastructure,<br>one layer at a time.</h1>
-    <p class="hero-desc">I'm Pavara — a self-taught DevOps engineer working through a 12-month roadmap (Linux → Docker → Kubernetes → CI/CD → Terraform → Cloud). I build infrastructure tooling that holds up under real use: idempotent, observable, and small enough to reason about.</p>
-    <div class="hero-actions">
-      <a href="https://github.com/PavaraM" target="_blank" rel="noopener" class="btn btn-primary">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.167 6.839 9.49.5.09.682-.218.682-.484 0-.236-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.532 1.03 1.532 1.03.891 1.529 2.341 1.088 2.91.832.091-.646.349-1.086.635-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.254-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.026A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.295 2.748-1.026 2.748-1.026.546 1.376.202 2.392.1 2.646.641.698 1.028 1.59 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.337-.012 2.415-.012 2.743 0 .269.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-        GitHub
-      </a>
-      <a href="#contact" class="btn btn-ghost">Get in touch →</a>
-    </div>
-    <div class="stack-row">
-      <span class="stack-label">Stack</span>
-      <div id="stack-pills"></div>
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">DevOps Engineer · Sri Lanka</p>
+        <h1>Building <em>reliable</em> infrastructure, one layer at a time.</h1>
+        <p class="hero-desc">I'm Pavara — a self-taught DevOps engineer working through a 12-month roadmap (Linux → Docker → Kubernetes → CI/CD → Terraform → Cloud). I build infrastructure tooling that holds up under real use: idempotent, observable, and small enough to reason about.</p>
+        <div class="hero-actions">
+          <a href="https://github.com/PavaraM" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.167 6.839 9.49.5.09.682-.218.682-.484 0-.236-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.532 1.03 1.532 1.03.891 1.529 2.341 1.088 2.91.832.091-.646.349-1.086.635-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.254-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.026A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.295 2.748-1.026 2.748-1.026.546 1.376.202 2.392.1 2.646.641.698 1.028 1.59 1.028 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.337-.012 2.415-.012 2.743 0 .269.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+            GitHub
+          </a>
+          <a href="#contact" class="btn btn-ghost">Get in touch →</a>
+        </div>
+        <div class="stack-row">
+          <span class="stack-label">Stack</span>
+          <div id="stack-pills"></div>
+        </div>
+      </div>
+
+      <div class="term-card" aria-hidden="true">
+        <div class="term-bar">
+          <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
+          <span class="term-title">pavara@obsidian — ~</span>
+        </div>
+        <div class="term-body">
+          <div><span class="p">$</span> devbox doctor</div>
+          <div><span class="c">[INFO]</span> Family: debian</div>
+          <div><span class="c">[INFO]</span> Distro: Ubuntu 24.04 LTS</div>
+          <div><span class="c">[INFO]</span> SSH hardening: applied</div>
+          <div><span class="c">[INFO]</span> Firewall (ufw): active</div>
+          <div><span class="c">[INFO]</span> Docker engine: healthy</div>
+          <div><span class="s">PASSED — 7/7 checks</span></div>
+          <div style="margin-top:14px"><span class="p">$</span> fixfolder ~/Downloads</div>
+          <div><span class="s">47 files organized ✓</span></div>
+          <div style="margin-top:14px"><span class="p">$</span> <span class="term-cursor"></span></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -215,8 +237,8 @@
 <!-- PROJECTS -->
 <section class="section" id="projects">
   <div class="container">
-    <p class="section-label">Selected Work</p>
-    <h2>Projects</h2>
+    <p class="section-label reveal">Selected Work</p>
+    <h2 class="reveal">Projects</h2>
     <div class="projects-grid" id="projects-grid"></div>
   </div>
 </section>
@@ -224,15 +246,15 @@
 <!-- ABOUT -->
 <section class="section" id="about">
   <div class="container">
-    <p class="section-label">Background</p>
-    <h2>About</h2>
+    <p class="section-label reveal">Background</p>
+    <h2 class="reveal">About</h2>
     <div class="about-grid">
-      <div class="about-text">
+      <div class="about-text reveal">
         <p>I started my DevOps journey on <strong>January 1, 2026</strong>, with no formal degree — just a structured 12-month roadmap and a preference for learning by building real things.</p>
         <p>My work is grounded in <strong>Linux systems, Bash automation, and containerization</strong>. I care about the small engineering details: clean exit codes, structured logs, modular architecture, minimal surface area.</p>
         <p>I'm working toward a <strong>remote junior DevOps or Platform Engineer role</strong>, building infrastructure tools that reflect how I think about systems — simply, clearly, and with care.</p>
       </div>
-      <ul class="fact-list">
+      <ul class="fact-list reveal" style="transition-delay:.1s">
         <li class="fact-item"><span class="fact-key">Location</span><span class="fact-val">Sri Lanka (open to remote)</span></li>
         <li class="fact-item"><span class="fact-key">Machine</span><span class="fact-val">OBSIDIAN · Ubuntu 24.04 · kernel 6.17</span></li>
         <li class="fact-item"><span class="fact-key">Current focus</span><span class="fact-val">Docker · CI/CD · Linux internals</span></li>
@@ -247,9 +269,9 @@
 <!-- CONTACT -->
 <section class="section section-last" id="contact">
   <div class="container">
-    <div class="contact-box">
+    <div class="contact-box reveal">
       <div>
-        <p class="contact-title">Let's work together.</p>
+        <p class="contact-title">Let's work <span>together</span>.</p>
         <p class="contact-sub">Open to remote DevOps, platform, or infrastructure roles. Feel free to reach out — I respond promptly.</p>
       </div>
       <div class="contact-links">
@@ -268,332 +290,99 @@
 
 <footer>
   <div class="container footer-inner">
-    <span>© 2026 Pavara Mirihagalla</span>
+    <span>© <span id="year">2026</span> Pavara Mirihagalla</span>
     <span>Built with HTML · No frameworks</span>
   </div>
 </footer>
 
-<!-- ADMIN PANEL -->
-<div id="admin-overlay" onclick="overlayClick(event)">
-  <div id="admin-panel">
-    <div class="admin-header">
-      <div class="admin-header-left">
-        <strong>Portfolio Editor</strong>
-        <span>Changes save automatically</span>
-      </div>
-      <button id="admin-close" onclick="closeAdmin()">✕</button>
-    </div>
-    <div class="admin-tabs">
-      <button class="admin-tab active" onclick="switchTab('projects')">Projects</button>
-      <button class="admin-tab" onclick="switchTab('skills')">Skills</button>
-    </div>
-    <div class="admin-body">
-
-      <!-- PROJECTS TAB -->
-      <div class="tab-pane active" id="tab-projects">
-        <div id="project-list"></div>
-
-        <!-- ADD/EDIT FORM -->
-        <div id="project-form-wrap">
-          <div class="form-title" id="form-title">New Project</div>
-          <input type="hidden" id="f-id">
-          <label class="form-label">Name *</label>
-          <input type="text" id="f-name" placeholder="e.g. DevBox">
-          <label class="form-label">Type tag</label>
-          <input type="text" id="f-type" placeholder="e.g. bash · infra · library">
-          <label class="form-label">Description</label>
-          <textarea id="f-desc" rows="3" placeholder="What does this project do?"></textarea>
-          <label class="form-label">Tags <span class="form-hint">(comma-separated)</span></label>
-          <input type="text" id="f-tags" placeholder="e.g. bash, docker, ubuntu">
-          <label class="form-label">Stats <span class="form-hint">(comma-separated — shown as small metadata)</span></label>
-          <input type="text" id="f-stats" placeholder="e.g. 5 modules, 14 exit codes">
-          <label class="form-label">GitHub / URL</label>
-          <input type="url" id="f-url" placeholder="https://github.com/...">
-          <div class="form-actions">
-            <button class="btn-save" onclick="saveProject()">Save project</button>
-            <button class="btn-cancel-form" onclick="closeForm()">Cancel</button>
-          </div>
-        </div>
-
-        <button class="btn-new-project" onclick="openNewProject()">+ Add project</button>
-      </div>
-
-      <!-- SKILLS TAB -->
-      <div class="tab-pane" id="tab-skills">
-        <div class="skill-add-row">
-          <input type="text" id="skill-input" placeholder="e.g. Kubernetes" onkeydown="if(event.key==='Enter') addSkill()">
-          <button class="btn-add-skill" onclick="addSkill()">Add</button>
-        </div>
-        <div id="skill-chips"></div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- PASSWORD PROMPT -->
-<div id="pw-overlay">
-  <div id="pw-box">
-    <h3>Editor access</h3>
-    <p>Enter your password to edit this portfolio.</p>
-    <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter') checkPassword()">
-    <div id="pw-error"></div>
-    <div class="pw-actions">
-      <button id="pw-submit" onclick="checkPassword()">Unlock</button>
-      <button id="pw-cancel" onclick="closePw()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<div id="toast"></div>
+<button id="to-top" aria-label="Scroll to top">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m18 15-6-6-6 6"/></svg>
+</button>
 
 <script>
-  // ── Default data ──────────────────────────────────────────────────────────
-  const DEFAULTS = {
-    projects: [
-      { id: "cicd-demo", name: "cicd-demo", type: "ci/cd", desc: "Flask API with full CI/CD pipeline — unit tests, multi-stage Docker build, Trivy security scan, and blue/green deploy on every push to main. Demonstrates a production-shaped pipeline: tests gate the build, the build gates the deploy.", tags: ["python","docker","github-actions","trivy","blue-green"], stats: ["Multi-stage Docker","Trivy vulnerability scan","Blue/green deploy"], url: "https://github.com/PavaraM/cicd-demo" },
-      { id: "devbox", name: "DevBox", type: "bash · infra", desc: "Modular Bash bootstrapper for Ubuntu/Debian dev environments. Idempotent provisioning, SSH hardening, UFW firewall, deploy-user setup, dry-run mode, structured logging. Six library modules, 17 exit codes.", tags: ["bash","ubuntu","ufw","ssh","systemd","automation"], stats: ["6 library modules","17 exit codes","Idempotent · dry-run capable"], url: "https://github.com/PavaraM/devbox" },
-      { id: "bash-logger", name: "bash-logger", type: "library", desc: "Reusable logging library extracted from DevBox. Standalone, portable module for consistent structured logging across Bash projects — clean API, sudo-aware ownership, config validation. Sudo chown runs at load time so logs never accumulate as root-owned.", tags: ["bash","logging","library","portable"], stats: ["Zero dependencies","Sudo-aware log ownership","Config validation at load"], url: "https://github.com/PavaraM/bash-logger" }
-    ],
-    skills: ["Linux","Docker","Bash","Git","GitHub Actions","Python","AWS","Docker Compose"]
-  };
+  // ── Content ───────────────────────────────────────────────────────────────
+  const PROJECTS = [
+    { id: "cicd-demo", name: "cicd-demo", type: "ci/cd", desc: "Flask API with a full CI/CD pipeline — ruff lint, pytest, and Trivy scans gate a multi-stage Docker build, then a health-gated blue/green deploy ships it to EC2 with zero downtime. Actions pinned to immutable SHAs.", tags: ["python", "flask", "docker", "github-actions", "trivy", "ec2"], stats: ["3 jobs · 5 gates", "SHA-pinned actions", "Blue/green · zero downtime"], url: "https://github.com/PavaraM/cicd-demo" },
+    { id: "devbox", name: "DevBox", type: "bash · infra", desc: "Infrastructure-as-Code for dev environments, on any Linux distro. Idempotent provisioning, Docker + Compose setup, SSH hardening, UFW firewall, deploy-user creation — driven by 10 composable profiles, 8 lifecycle hooks, and a zero-dependency curl|sh installer.", tags: ["bash", "linux", "docker", "ufw", "ssh", "iac"], stats: ["10 distros · 19 exit codes", "10 profiles · 8 hooks", "Idempotent · dry-run"], url: "https://github.com/PavaraM/devbox" },
+    { id: "bash-logger", name: "bash-logger", type: "library", desc: "Reusable structured logging library for Bash — DEBUG/INFO/WARN/ERROR levels, colored console output, timestamped file logs, retention-based auto-archival, and sudo-aware file ownership with no load-time side effects.", tags: ["bash", "logging", "library", "portable"], stats: ["Zero dependencies", "4 log levels", "Auto-archive"], url: "https://github.com/PavaraM/bash-logger" },
+    { id: "fixfolder", name: "fixfolder", type: "bash · utility", desc: "Sorts any directory into 17 categorized subfolders — images, documents, archives, code, config, and more. Recognizes 100+ extensions with safe move validation, an audit-trail log, and real-time progress summaries.", tags: ["bash", "filesystem", "cli", "linux"], stats: ["17 categories", "100+ extensions", "Audit-trail logs"], url: "https://github.com/PavaraM/Smart-File-Organizer" }
+  ];
 
-  // ── State ─────────────────────────────────────────────────────────────────
-  let projects = [];
-  let skills = [];
+  const SKILLS = ["Linux", "Docker", "Bash", "Python", "Git", "GitHub Actions", "AWS", "Docker Compose"];
 
-  function load() {
-    try {
-      const p = localStorage.getItem("pv-projects");
-      const s = localStorage.getItem("pv-skills");
-      projects = p ? JSON.parse(p) : DEFAULTS.projects;
-      skills   = s ? JSON.parse(s) : DEFAULTS.skills;
-    } catch(e) {
-      projects = DEFAULTS.projects;
-      skills   = DEFAULTS.skills;
-    }
-  }
-
-  function save() {
-    localStorage.setItem("pv-projects", JSON.stringify(projects));
-    localStorage.setItem("pv-skills",   JSON.stringify(skills));
-    toast("Saved ✓");
-  }
-
-  // ── Render portfolio ──────────────────────────────────────────────────────
-  function render() {
-    renderStack();
-    renderProjects();
-  }
+  // ── Render ────────────────────────────────────────────────────────────────
+  const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
   function renderStack() {
-    const el = document.getElementById("stack-pills");
-    el.innerHTML = skills.map(s =>
-      `<span class="stack-pill" style="margin-right:8px;margin-bottom:4px">${esc(s)}</span>`
-    ).join("");
+    document.getElementById("stack-pills").innerHTML =
+      SKILLS.map(s => `<span class="stack-pill" style="margin-right:8px;margin-bottom:4px">${esc(s)}</span>`).join("");
   }
 
   function renderProjects() {
-    const grid = document.getElementById("projects-grid");
-    if (!projects.length) {
-      grid.innerHTML = `<p style="color:var(--muted);font-size:14px">No projects yet. Click Edit to add one.</p>`;
-      return;
-    }
-    grid.innerHTML = projects.map(p => `
-      <a href="${esc(p.url)}" target="_blank" rel="noopener" class="project-card">
-        <div>
-          <div class="project-name">
-            ${esc(p.name)}
-            ${p.type ? `<span class="mono-tag">${esc(p.type)}</span>` : ""}
-          </div>
-          <p class="project-desc">${esc(p.desc)}</p>
-          <div class="project-tags">${p.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
-          ${p.stats.length ? `<div class="project-stats">${p.stats.map(s => `<span>${esc(s)}</span>`).join("")}</div>` : ""}
+    document.getElementById("projects-grid").innerHTML = PROJECTS.map((p, i) => `
+      <a href="${esc(p.url)}" target="_blank" rel="noopener" class="project-card reveal" style="transition-delay:${i * 70}ms">
+        <div class="project-top">
+          <div class="project-name">${esc(p.name)}${p.type ? `<span class="mono-tag">${esc(p.type)}</span>` : ""}</div>
+          <span class="card-arrow">↗</span>
         </div>
-        <div class="card-arrow">↗</div>
+        <p class="project-desc">${esc(p.desc)}</p>
+        <div class="project-tags">${p.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
+        <div class="project-stats">${p.stats.map(s => `<span>${esc(s)}</span>`).join("")}</div>
       </a>
     `).join("");
   }
 
-  // ── Admin panel ───────────────────────────────────────────────────────────
-  function openAdmin() {
-    if (sessionStorage.getItem("pv-auth") === "1") {
-      showAdmin();
-    } else {
-      document.getElementById("pw-overlay").classList.add("open");
-      setTimeout(() => document.getElementById("pw-input").focus(), 50);
-    }
+  // ── Theme toggle ──────────────────────────────────────────────────────────
+  const root = document.documentElement;
+  document.getElementById("theme-toggle").addEventListener("click", () => {
+    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("pv-theme", next); } catch (e) {}
+  });
+
+  // ── Scroll: nav state, scrollspy, to-top ─────────────────────────────────
+  const nav = document.getElementById("nav");
+  const toTop = document.getElementById("to-top");
+  const sections = [...document.querySelectorAll("section[id]")];
+  const navLinks = [...document.querySelectorAll(".nav-links a")];
+
+  function onScroll() {
+    nav.classList.toggle("scrolled", window.scrollY > 4);
+    toTop.classList.toggle("visible", window.scrollY > 600);
+
+    const y = window.scrollY + 140;
+    let current = sections[0] ? sections[0].id : "";
+    for (const s of sections) if (s.offsetTop <= y) current = s.id;
+    navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + current));
   }
 
-  function showAdmin() {
-    document.getElementById("admin-overlay").classList.add("open");
-    renderAdminProjects();
-    renderSkillChips();
-  }
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { onScroll(); ticking = false; });
+  });
+  onScroll();
 
-  // Default password is "devops" — change ADMIN_PW to whatever you want
-  const ADMIN_PW = "devops";
+  toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
-  function checkPassword() {
-    const val = document.getElementById("pw-input").value;
-    const err = document.getElementById("pw-error");
-    const inp = document.getElementById("pw-input");
-    if (val === ADMIN_PW) {
-      sessionStorage.setItem("pv-auth", "1");
-      document.getElementById("pw-overlay").classList.remove("open");
-      inp.value = "";
-      err.textContent = "";
-      showAdmin();
-    } else {
-      err.textContent = "Wrong password.";
-      inp.classList.add("shake");
-      inp.value = "";
-      setTimeout(() => inp.classList.remove("shake"), 350);
-    }
-  }
-
-  function closePw() {
-    document.getElementById("pw-overlay").classList.remove("open");
-    document.getElementById("pw-input").value = "";
-    document.getElementById("pw-error").textContent = "";
-  }
-  function closeAdmin() {
-    document.getElementById("admin-overlay").classList.remove("open");
-  }
-  function overlayClick(e) {
-    if (e.target === document.getElementById("admin-overlay")) closeAdmin();
-  }
-
-  function switchTab(tab) {
-    document.querySelectorAll(".admin-tab").forEach((t,i) => t.classList.toggle("active", ["projects","skills"][i] === tab));
-    document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
-    document.getElementById("tab-" + tab).classList.add("active");
-  }
-
-  // ── Project admin ─────────────────────────────────────────────────────────
-  function renderAdminProjects() {
-    const list = document.getElementById("project-list");
-    list.innerHTML = projects.map(p => `
-      <div class="p-row">
-        <div class="p-row-info">
-          <span class="p-row-name">${esc(p.name)}</span>
-          ${p.type ? `<span class="p-row-type">${esc(p.type)}</span>` : ""}
-        </div>
-        <div class="p-row-btns">
-          <button class="row-btn" onclick="editProject('${p.id}')">Edit</button>
-          <button class="row-btn del" onclick="deleteProject('${p.id}')">Delete</button>
-        </div>
-      </div>
-    `).join("");
-  }
-
-  function openNewProject() {
-    document.getElementById("form-title").textContent = "New Project";
-    document.getElementById("f-id").value    = "";
-    document.getElementById("f-name").value  = "";
-    document.getElementById("f-type").value  = "";
-    document.getElementById("f-desc").value  = "";
-    document.getElementById("f-tags").value  = "";
-    document.getElementById("f-stats").value = "";
-    document.getElementById("f-url").value   = "";
-    document.getElementById("project-form-wrap").classList.add("open");
-    document.getElementById("f-name").focus();
-  }
-
-  function editProject(id) {
-    const p = projects.find(x => x.id === id);
-    if (!p) return;
-    document.getElementById("form-title").textContent = "Edit Project";
-    document.getElementById("f-id").value    = p.id;
-    document.getElementById("f-name").value  = p.name;
-    document.getElementById("f-type").value  = p.type;
-    document.getElementById("f-desc").value  = p.desc;
-    document.getElementById("f-tags").value  = p.tags.join(", ");
-    document.getElementById("f-stats").value = p.stats.join(", ");
-    document.getElementById("f-url").value   = p.url;
-    document.getElementById("project-form-wrap").classList.add("open");
-    document.getElementById("f-name").focus();
-  }
-
-  function closeForm() {
-    document.getElementById("project-form-wrap").classList.remove("open");
-  }
-
-  function saveProject() {
-    const name = document.getElementById("f-name").value.trim();
-    if (!name) { alert("Project name is required."); return; }
-    const id = document.getElementById("f-id").value || Math.random().toString(36).slice(2,9);
-    const project = {
-      id,
-      name,
-      type:  document.getElementById("f-type").value.trim(),
-      desc:  document.getElementById("f-desc").value.trim(),
-      tags:  document.getElementById("f-tags").value.split(",").map(t => t.trim()).filter(Boolean),
-      stats: document.getElementById("f-stats").value.split(",").map(s => s.trim()).filter(Boolean),
-      url:   document.getElementById("f-url").value.trim() || "https://github.com/PavaraM",
-    };
-    const existing = projects.findIndex(p => p.id === id);
-    if (existing >= 0) projects[existing] = project;
-    else projects.push(project);
-    save();
-    render();
-    renderAdminProjects();
-    closeForm();
-  }
-
-  function deleteProject(id) {
-    if (!confirm("Delete this project?")) return;
-    projects = projects.filter(p => p.id !== id);
-    save();
-    render();
-    renderAdminProjects();
-  }
-
-  // ── Skills admin ──────────────────────────────────────────────────────────
-  function renderSkillChips() {
-    document.getElementById("skill-chips").innerHTML = skills.map(s => `
-      <div class="skill-chip">
-        ${esc(s)}
-        <button class="skill-x" onclick="removeSkill('${esc(s)}')">✕</button>
-      </div>
-    `).join("");
-  }
-
-  function addSkill() {
-    const input = document.getElementById("skill-input");
-    const s = input.value.trim();
-    if (!s || skills.includes(s)) { input.value = ""; return; }
-    skills.push(s);
-    input.value = "";
-    save();
-    render();
-    renderSkillChips();
-  }
-
-  function removeSkill(s) {
-    skills = skills.filter(x => x !== s);
-    save();
-    render();
-    renderSkillChips();
-  }
-
-  // ── Utilities ─────────────────────────────────────────────────────────────
-  function esc(str) {
-    return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-  }
-
-  let toastTimer;
-  function toast(msg) {
-    const el = document.getElementById("toast");
-    el.textContent = msg;
-    el.style.display = "block";
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.style.display = "none", 2000);
+  // ── Reveal on scroll (skipped under reduced motion) ──────────────────────
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!prefersReducedMotion && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll(".reveal").forEach(el => el.classList.add("is-visible"));
   }
 
   // ── Init ──────────────────────────────────────────────────────────────────
-  load();
-  render();
+  renderStack();
+  renderProjects();
+  document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
