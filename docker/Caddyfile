@@ -22,7 +22,9 @@
 
     # Birthday letter — forward to the birthday Caddy container
     handle_path /birthday/* {
-        reverse_proxy host.docker.internal:8080
+        reverse_proxy host.docker.internal:8080 {
+            header_up Host munchi.duckdns.org
+        }
     }
 
     # Portfolio — everything else goes to Nginx
