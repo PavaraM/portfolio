@@ -1,0 +1,41 @@
+# Caddy reverse proxy for pavaradev.duckdns.org.
+#
+# Routes:
+#   /              -> portfolio (Nginx container, internal port 80)
+#   /birthday/*    -> birthday letter (Caddy container on host, port 8080)
+#
+# SITE_DOMAIN controls the site address:
+#   http://localhost             -> plain HTTP on :80 (local dev)
+#   pavaradev.duckdns.org        -> automatic HTTPS via Let's Encrypt (production)
+
+{$SITE_DOMAIN:http://localhost} {
+    # Security headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "no-referrer"
+        Permissions-Policy "geolocation=(), microphone=(), camera=()"
+        -Server
+        -X-Powered-By
+    }
+
+    # Birthday letter — forward to the birthday Caddy container
+    handle_path /birthday/* {
+        reverse_proxy host.docker.internal:8080
+    }
+
+    # Portfolio — everything else goes to Nginx
+    handle {
+        reverse_proxy portfolio:80
+    }
+
+    log {
+        output stderr
+    }
+}
+
+# Loopback healthcheck endpoint
+http://127.0.0.1 {
+    respond "ok" 200
+}

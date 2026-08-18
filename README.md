@@ -2,14 +2,25 @@
 
 Personal DevOps portfolio for [Pavara Mirihagalla](https://github.com/PavaraM). Single-file static site — no build step, no frameworks.
 
-**Live:** [pavaram.github.io/portfolio](https://pavaram.github.io/portfolio)
+**Live:** [pavaradev.duckdns.org](https://pavaradev.duckdns.org) · [GitHub Pages backup](https://pavaram.github.io/portfolio)
 
 ## Structure
 
 ```
 portfolio/
-├── index.html                    # entire site (HTML, CSS, JS)
-└── .github/workflows/static.yml  # GitHub Pages deploy on push to main
+├── index.html                        # entire site (HTML, CSS, JS)
+├── Dockerfile                        # Nginx container image
+├── docker-compose.yml                # Caddy reverse proxy + Nginx app
+├── docker/
+│   ├── nginx.conf                    # Nginx config for static site
+│   └── Caddyfile                     # Reverse proxy (TLS, /birthday/* routing)
+├── scripts/
+│   ├── deploy.sh                     # SSH deploy with healthcheck + auto-rollback
+│   └── rollback.sh                   # Rollback to previous image
+├── Makefile                          # docker-build, deploy, rollback, ssh, status
+└── .github/workflows/
+    ├── deploy.yml                    # OCI deployment (Docker + SSH)
+    └── static.yml                    # GitHub Pages (backup)
 ```
 
 ## Editing content
@@ -51,9 +62,43 @@ python -m http.server 8080
 
 Open [http://localhost:8080](http://localhost:8080).
 
+## Docker (local)
+
+```bash
+make docker-run     # build + start on http://localhost:8080
+make docker-stop    # stop containers
+```
+
 ## Deploy
 
-Push to `main`. The GitHub Actions workflow uploads the repo and deploys to GitHub Pages. Allow ~30 s for the site to update.
+Push to `main`. Two workflows run:
+
+1. **`deploy.yml`** — builds a Docker image, pushes to GHCR, deploys to the OCI instance over SSH with healthcheck + auto-rollback.
+2. **`static.yml`** — deploys to GitHub Pages as a backup.
+
+### Manual deploy / rollback
+
+```bash
+# Deploy (requires VM_HOST, VM_USER, VM_SSH_PORT, VM_SSH_KEY)
+make deploy
+
+# Rollback to previous image
+make rollback
+
+# Check remote status
+make status
+
+# SSH into the instance
+make ssh
+```
+
+### Architecture
+
+```
+Internet → :80/:443 → Caddy (reverse proxy + TLS)
+    /           → Nginx container (portfolio)
+    /birthday/* → Birthday Caddy container (host.docker.internal:8080)
+```
 
 ## Features
 

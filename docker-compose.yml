@@ -1,0 +1,74 @@
+# docker-compose.yml — Portfolio + reverse proxy for the OCI instance.
+#
+# Local dev:
+#   docker compose up -d --build
+#   curl http://localhost:8080
+#
+# Production (on the VM, via CI/CD):
+#   SITE_DOMAIN=pavaradev.duckdns.org docker compose up -d
+#   -> Caddy binds :80/:443 and provisions TLS automatically
+#
+# The birthday letter container runs separately (same host) and is
+# reached via host.docker.internal:8080 from the Caddy reverse proxy.
+
+services:
+  portfolio:
+    image: ${APP_IMAGE:-ghcr.io/pavaram/portfolio:latest}
+    container_name: portfolio
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:size=16m
+      - /var/run:size=1m
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy-proxy
+    restart: unless-stopped
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:-http://localhost}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      portfolio:
+        condition: service_healthy
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  caddy_data:
+  caddy_config:
