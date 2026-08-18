@@ -79,6 +79,7 @@
     .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
     .btn-ghost:hover { border-color: #b8b4ab; background: var(--surface); transform: translateY(-1px); }
     .stack-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    #stack-pills { display: flex; flex-wrap: wrap; gap: 8px; }
     .stack-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
     .stack-pill { font-family: var(--mono); font-size: 11.5px; background: var(--tag-bg); color: var(--muted); padding: 4px 10px; border-radius: 5px; border: 1px solid var(--border); }
 
@@ -315,7 +316,7 @@
 
   function renderStack() {
     document.getElementById("stack-pills").innerHTML =
-      SKILLS.map(s => `<span class="stack-pill" style="margin-right:8px;margin-bottom:4px">${esc(s)}</span>`).join("");
+      SKILLS.map(s => `<span class="stack-pill">${esc(s)}</span>`).join("");
   }
 
   function renderProjects() {
@@ -331,6 +332,11 @@
       </a>
     `).join("");
   }
+
+  // ── Render now (cards must exist before the reveal observer targets them) ─
+  renderStack();
+  renderProjects();
+  document.getElementById("year").textContent = new Date().getFullYear();
 
   // ── Theme toggle ──────────────────────────────────────────────────────────
   const root = document.documentElement;
@@ -378,11 +384,6 @@
   } else {
     document.querySelectorAll(".reveal").forEach(el => el.classList.add("is-visible"));
   }
-
-  // ── Init ──────────────────────────────────────────────────────────────────
-  renderStack();
-  renderProjects();
-  document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
