@@ -3,7 +3,6 @@ dist/
 .git/
 .github/
 scripts/
-docker/
 *.md
 .gitignore
 .dockerignore
