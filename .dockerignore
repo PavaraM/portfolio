@@ -1,0 +1,12 @@
+target/
+dist/
+.git/
+.github/
+scripts/
+docker/
+*.md
+.gitignore
+.dockerignore
+Makefile
+docker-compose.yml
+.trunk/
