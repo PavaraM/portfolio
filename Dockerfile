@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.7
 
 # ── Stage 1: Build the WASM bundle with Trunk ──
-FROM rust:1.82-slim AS builder
+FROM rust:1.87-slim AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates && rm -rf /var/lib/apt/lists/*
 
