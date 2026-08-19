@@ -9,11 +9,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certifi
 ARG TRUNK_VERSION=v0.21.14
 ARG TARGETARCH
 RUN case "$TARGETARCH" in \
-      amd64) TRUNK_ARCH="x86_64-unknown-linux-gnu" ;; \
-      arm64) TRUNK_ARCH="aarch64-unknown-linux-gnu" ;; \
+      amd64) TRUNK_ARCH="x86_64" ;; \
+      arm64) TRUNK_ARCH="aarch64" ;; \
       *) echo "Unsupported arch: $TARGETARCH" && exit 1 ;; \
     esac && \
-    curl -fsSL "https://github.com/thedodd/trunk/releases/download/${TRUNK_VERSION}/trunk-${TRUNK_VERSION}-${TARGETARCH}-unknown-linux-gnu.tar.gz" \
+    curl -fsSL "https://github.com/thedodd/trunk/releases/download/${TRUNK_VERSION}/trunk-${TRUNK_VERSION}-${TRUNK_ARCH}-unknown-linux-gnu.tar.gz" \
     | tar xz -C /usr/local/bin && \
     trunk --version
 
