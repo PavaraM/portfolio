@@ -1,7 +1,0 @@
-# Rust / WASM build artifacts
-/target/
-/dist/
-
-# OS
-.DS_Store
-Thumbs.db
