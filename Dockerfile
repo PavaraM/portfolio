@@ -13,7 +13,7 @@ RUN case "$TARGETARCH" in \
       arm64) TRUNK_ARCH="aarch64" ;; \
       *) echo "Unsupported arch: $TARGETARCH" && exit 1 ;; \
     esac && \
-    curl -fsSL "https://github.com/thedodd/trunk/releases/download/${TRUNK_VERSION}/trunk-${TRUNK_VERSION}-${TRUNK_ARCH}-unknown-linux-gnu.tar.gz" \
+    curl -fsSL "https://github.com/thedodd/trunk/releases/download/${TRUNK_VERSION}/trunk-${TRUNK_ARCH}-unknown-linux-gnu.tar.gz" \
     | tar xz -C /usr/local/bin && \
     trunk --version
 
