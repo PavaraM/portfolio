@@ -1,16 +1,7 @@
 .git/
 .github/
 .opencode/
-target/
-dist/
-.trunk/
 scripts/
-docker/
 *.md
 Makefile
 docker-compose.yml
-Cargo.toml
-Cargo.lock
-Trunk.toml
-style.css
-src/
