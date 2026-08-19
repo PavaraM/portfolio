@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.7
 
 # ── Stage 1: Build the WASM bundle with Trunk ──
-FROM rust:1.87-slim AS builder
+FROM rust:1.97-slim AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates && rm -rf /var/lib/apt/lists/*
 
@@ -15,7 +15,8 @@ RUN case "$TARGETARCH" in \
     esac && \
     curl -fsSL "https://github.com/thedodd/trunk/releases/download/${TRUNK_VERSION}/trunk-${TRUNK_ARCH}-unknown-linux-gnu.tar.gz" \
     | tar xz -C /usr/local/bin && \
-    trunk --version
+    trunk --version && \
+    rustup target add wasm32-unknown-unknown
 
 WORKDIR /app
 COPY Cargo.toml Cargo.lock* ./
